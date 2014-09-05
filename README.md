@@ -23,22 +23,6 @@ Web Audio APIを用いていくつかの簡単なアプリケーションを実�
 
       + [魔王魂](http://maoudamashii.jokersounds.com/)
 
-### Demo
-
-### VS.
-
-### Requirement
-
-### Usage
-
-### Install
-
-### Contribution
-
-### Licence
-
-[MIT](https://github.com/tcnksm/tool/blob/master/LICENCE)
-
 ## Author
 
 [@sota1235](https://github.com/sota1235)
