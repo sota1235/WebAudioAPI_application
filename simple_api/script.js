@@ -5,12 +5,13 @@
   url = 'http://sota1235.net/coin05.wav';
 
   init = function(callback) {
-    var context, e;
+    var AudioContext, context, e;
     if (callback == null) {
       callback = function() {};
     }
     try {
-      context = new webkitAudioContext();
+      AudioContext = window.AudioContext || window.webkitAudioContext;
+      context = new AudioContext();
       return callback(null, context, url);
     } catch (_error) {
       e = _error;
