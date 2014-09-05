@@ -19,6 +19,10 @@ Web Audio APIを用いていくつかの簡単なアプリケーションを実�
 
     - それぞれの音を録音することも可能
 
+    - 音はこちらから頂きました
+
+      + [魔王魂](http://maoudamashii.jokersounds.com/)
+
 ### Demo
 
 ### VS.
