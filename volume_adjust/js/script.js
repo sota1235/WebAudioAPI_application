@@ -42,7 +42,7 @@
   };
 
   playSound = function(source) {
-    return source.start(time);
+    return source.start(0);
   };
 
   stopSound = function(source) {
@@ -51,10 +51,10 @@
 
   createGainNode = function(context, source) {
     var gainNode;
-    gainNode = context.createGainNode();
+    gainNode = context.createGain();
     source.connect(gainNode);
-    gainNode.connect(context.distinatio);
-    return gainNoden;
+    gainNode.connect(context.destination);
+    return gainNode;
   };
 
   context = null;
@@ -76,9 +76,7 @@
   $(function() {
     $('#button').click(function() {
       $('#loading').text('Now loading...');
-      console.log('hello');
       url = $('#url').val();
-      console.log('hello' + url);
       return loadSound(context, url, function(buf) {
         buffer = buf;
         source = makeSource(context, buf);
@@ -94,15 +92,16 @@
             return gainNode.gain.value = ui.value / 100;
           },
           create: function(e, ui) {
-            return volume = $(this).slide('option', 'value');
+            return volume = $(this).slider('option', 'value');
           }
         });
       });
     });
-    $('#start').click(function() {
+    $(document).on('click', '#start', function() {
+      console.log('hello');
       return playSound(source);
     });
-    return $('#stop').click(function() {
+    return $(document).on('click', '#stop', function() {
       return stopSound(source);
     });
   });
