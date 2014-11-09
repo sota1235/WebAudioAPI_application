@@ -23,6 +23,32 @@ Web Audio APIを用いていくつかの簡単なアプリケーションを実�
 
       + [魔王魂](http://maoudamashii.jokersounds.com/)
 
+  * volume_adjust
+
+    - 環境音に合わせて音量調整される音楽プレーヤー
+
+    - 未完成
+
+  * analyzer
+
+    - マイク入力音源の各周波数を表示
+
+## Run
+
+#### Python3
+
+```sh
+python -m http.server
+```
+
+#### Python2
+
+```sh
+python -m SimpleHTTPServer
+```
+
+Then, you can access to ```localhost:8000```.
+
 ## Author
 
 [@sota1235](https://github.com/sota1235)
