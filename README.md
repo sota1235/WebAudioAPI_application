@@ -29,9 +29,13 @@ Web Audio APIを用いていくつかの簡単なアプリケーションを実�
 
     - 未完成
 
-  * analyzer
+  * analyser
 
     - マイク入力音源の各周波数を表示
+
+  * hue_talk
+
+    - 会話の音量、声の高さに合わせてHueの色が変わる
 
 ## Run
 
