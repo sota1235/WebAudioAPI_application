@@ -28,8 +28,8 @@
   input = null;
 
   window.onload = function() {
-    var i, _i, _results;
-    init(function(err, con) {
+    return init(function(err, con) {
+      var f, fsDivN, i, n50hz, text, _i, _results;
       if (err) {
         alert(err);
         return;
@@ -39,13 +39,21 @@
       delay.delayTime.value = 0.07;
       analyser = context.createAnalyser();
       analyser.fftsize = 1024;
-      return analyser.smoothingTimeContant = 0.9;
+      analyser.smoothingTimeContant = 0.9;
+      fsDivN = context.sampleRate / analyser.fftsize;
+      n50hz = Math.floor(50 / fsDivN);
+      _results = [];
+      for (i = _i = 0; _i <= 256; i = ++_i) {
+        if (i % n50hz === 0) {
+          f = Math.floor(50 * (i / n50hz));
+          text = f < 1000 ? f + 'Hz' : f / 100 + 'kHz';
+          _results.push($('.analyser').append(text + '<div id="' + i.toString() + '"></div>'));
+        } else {
+          _results.push(void 0);
+        }
+      }
+      return _results;
     });
-    _results = [];
-    for (i = _i = 0; _i <= 256; i = ++_i) {
-      _results.push($('.analyser').append('<div id="' + i.toString() + '"></div>'));
-    }
-    return _results;
   };
 
   $('.start').click(function() {
