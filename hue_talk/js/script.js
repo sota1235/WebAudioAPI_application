@@ -45,6 +45,11 @@
       return analyser.smoothingTimeContant = 0.9;
     });
     hue = new HueController(ip, user);
+    hue.changeBri(3, 255).then(function(result) {
+      return console.log('onloaded');
+    }).fail(function(err) {
+      return console.log(err);
+    });
     return $('.analyser').append('<div id="volume"></div>');
   };
 
@@ -72,14 +77,15 @@
     for (i = _i = 0; _i <= 255; i = ++_i) {
       sum += data[i];
     }
-    return hue.changeBri(3, parseInt(sum / 256)).then(function(result) {
-      console.log(sum / 255);
+    return hue.lightTrriger(3, parseInt(sum / 256) > 75).then(function(result) {
+      console.log(result);
+      console.log(parseInt(sum / 255));
       return $('#volume').text((sum / 255).toString());
     }).fail(function(err) {
       return console.log(err);
     });
   };
 
-  setInterval(getFreq, 100);
+  setInterval(getFreq, 80);
 
 }).call(this);
