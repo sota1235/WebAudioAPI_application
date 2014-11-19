@@ -54,8 +54,8 @@ $ ->
   canvasContext = canvas.getContext '2d'
   # キャッシュされたjQuery-DOMパーツ
   $startButton = $ '#startButton'
-  $sidebar = $ '#sidebase'
-  $number = $ '#num'
+  $slider = $ '#slider'
+  $num = $ '#num'
   $volume = $ '#volume'
 
   # スタートボタンのコールバック処理
@@ -71,8 +71,8 @@ $ ->
           input.connect analyser
         , (err) ->
           console.log 'Error: ' + err
-  # サイドバー
-  $sidebar.slider
+  # スライダー
+  $slider.slider
     min: 0
     max: 255
     step: 1
