@@ -136,7 +136,6 @@
       }
       return hue.lightTrriger(3, parseInt(sum / 256) > range).then(function(result) {
         console.log(result);
-        console.log(parseInt(sum / 255));
         return $volume.text((sum / 255).toString());
       }).fail(function(err) {
         return console.log(err);
