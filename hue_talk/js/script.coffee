@@ -29,6 +29,7 @@ input    = null
 hue         = null
 ip          = '192.168.1.100'
 user        = 'newdeveloper'
+lightNum    = 3
 lightSwitch = false # Hueの電気のon/offを持つ
 
 # Other
@@ -41,9 +42,10 @@ analyser.smoothingTimeContant = 0
 
 # hue setting
 hue = new HueController(ip, user)
+# Hueの"bri"パラメータをマックスにしておく
 hue.changeBri 3, 255
 .then (result) ->
-  console.log 'onloaded'
+  console.log 'Hue setting completed'
 .fail (err) ->
   console.log err
 
@@ -68,7 +70,9 @@ $ ->
       navigator.getUserMedia
         audio: true
         , (stream) ->
+          # マイク入力をinput Nodeにつなげる
           input = context.createMediaStreamSource stream
+          # inputをanalyser Nodeにつなげる
           input.connect analyser
         , (err) ->
           console.log 'Error: ' + err
@@ -78,6 +82,7 @@ $ ->
     range = this.value
 
   # 波形をドローするメソッド
+  # clone from http://curtaincall.weblike.jp/portfolio-web-sounder/webaudioapi-visualization/draw-wave
   drawWave = (data) ->
     len = data.length
     width  = canvas.width
@@ -94,8 +99,10 @@ $ ->
 
     middle = (modHeight / 2) + paddingTop
 
+    # Frequency resolution
     fsDivN = context.sampleRate / analyser.fftsize
 
+    # 500Hz毎に描画するための処理
     n500Hz = Math.floor 500 / fsDivN
 
     canvasContext.clearRect 0, 0, canvas.width, canvas.height
@@ -136,18 +143,20 @@ $ ->
     canvasContext.fillText '1.00', 3, paddingTop
     canvasContext.fillText '0.50', 3, middle
     canvasContext.fillText '0.00', 3, modBottom
-  # 周波数を
+  # setIntervalで各周波数の値をとり、それを元に処理
   getFreq = ->
     buffer = new Uint8Array(256)
     analyser.getByteFrequencyData buffer
     drawWave buffer
     volumeSum = 0
+    # 各周波数の総和を計算
     for i in [0..255]
       volumeSum += buffer[i]
+    # 各周波数の平均をその場の音量として計算
     volume = parseInt(volumeSum/256)
     # volumeがrange以上かつlightがoffの時
     if volume > range and !lightSwitch
-      hue.lightTrriger 3, true
+      hue.lightTrriger lightNum, true
         .then (result) ->
           console.log 'light on'
           lightSwitch = true
@@ -155,12 +164,13 @@ $ ->
           console.log err
     # volumeがrange以下かつlightがonの時
     else if volume < range and lightSwitch
-      hue.lightTrriger 3, false
+      hue.lightTrriger lightNum, false
         .then (result) ->
           console.log 'light off'
           lightSwitch = false
         .fail (err) ->
           console.log err
+    # ページに現在の音量を描画
     $volume.text (volumeSum/255).toString()
 
   setInterval getFreq, 80
