@@ -56,29 +56,13 @@ $ ->
   # canvasコンテクスト
   canvasContext = canvas.getContext '2d'
   # キャッシュされたjQuery-DOMパーツ
-  $startButton = $ '#startButton'
   $slider = $ '#slider'
-  $num = $ '#num'
+  $threshold = $ '#threshold'
   $volume = $ '#volume'
 
-  # スタートボタンのコールバック処理
-  $startButton.on 'click', (e) ->
-    if !navigator.getUserMedia
-      alert 'WebRTC(getUserMedia) is not suppported...'
-    else
-      console.log 'getUserMedia suppported.'
-      navigator.getUserMedia
-        audio: true
-        , (stream) ->
-          # マイク入力をinput Nodeにつなげる
-          input = context.createMediaStreamSource stream
-          # inputをanalyser Nodeにつなげる
-          input.connect analyser
-        , (err) ->
-          console.log 'Error: ' + err
   # スライダー
   $slider.on 'input', (e) ->
-    $num.text this.value
+    $threshold.val this.value
     range = this.value
 
   # 波形をドローするメソッド
@@ -170,7 +154,4 @@ $ ->
           lightSwitch = false
         .fail (err) ->
           console.log err
-    # ページに現在の音量を描画
-    $volume.text (volumeSum/255).toString()
-
   setInterval getFreq, 80
