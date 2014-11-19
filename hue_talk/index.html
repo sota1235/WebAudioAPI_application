@@ -3,8 +3,6 @@
   <title>Hue Talk Sample</title>
   <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
   <script src="../jquery/jquery-1.11.1.min.js"></script>
-  <script src="../jquery/jquery-migrate-1.2.1.js"></script>
-  <script src="js/lib/jquery-ui.min.js"></script>
   <script src="js/lib/color-convert-0.5.1.min.js"></script>
   <script src="js/lib/hue.js"></script>
 </head>
@@ -13,9 +11,9 @@
   <h1>Hue Talk Sample</h1>
   <p>音量に応じてHueの光量を変化</p>
   <button id="startButton" value="Push">Push</button>
-  <div id="volume"></div>
-  <div id="num" type="text" size="3" reqdonly /></div>
-  <div id="slider" style="width:300px;"></div>
+  <div id="volume">0</div>
+  <div id="num" type="text" size="3" reqdonly />50</div>
+  <input id="slider" type="range" min="0" max="255" step="1" value="50" style="width:300px" />
   <script src="./js/script.js"></script>
   <canvas width="720" height="240">
 </body>

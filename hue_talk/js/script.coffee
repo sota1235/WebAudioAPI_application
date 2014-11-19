@@ -73,16 +73,9 @@ $ ->
         , (err) ->
           console.log 'Error: ' + err
   # スライダー
-  $slider.slider
-    min: 0
-    max: 255
-    step: 1
-    value: 50
-    change: (e, ui) ->
-      $num.text ui.value
-      range = ui.value
-    create: (e, ui) ->
-      $num.text $(this).slider 'option', 'value'
+  $slider.on 'input', (e) ->
+    $num.text this.value
+    range = this.value
 
   # 波形をドローするメソッド
   drawWave = (data) ->
