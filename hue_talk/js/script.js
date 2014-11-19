@@ -36,7 +36,7 @@
   hue = new HueController(ip, user);
 
   hue.changeBri(3, 255).then(function(result) {
-    return console.log('onloaded');
+    return console.log('Hue setting completed');
   }).fail(function(err) {
     return console.log(err);
   });
