@@ -42,30 +42,14 @@
   });
 
   $(function() {
-    var $num, $slider, $startButton, $volume, canvas, canvasContext, drawWave, getFreq;
+    var $slider, $threshold, $volume, canvas, canvasContext, drawWave, getFreq;
     canvas = document.querySelector('canvas');
     canvasContext = canvas.getContext('2d');
-    $startButton = $('#startButton');
     $slider = $('#slider');
-    $num = $('#num');
+    $threshold = $('#threshold');
     $volume = $('#volume');
-    $startButton.on('click', function(e) {
-      if (!navigator.getUserMedia) {
-        return alert('WebRTC(getUserMedia) is not suppported...');
-      } else {
-        console.log('getUserMedia suppported.');
-        return navigator.getUserMedia({
-          audio: true
-        }, function(stream) {
-          input = context.createMediaStreamSource(stream);
-          return input.connect(analyser);
-        }, function(err) {
-          return console.log('Error: ' + err);
-        });
-      }
-    });
     $slider.on('input', function(e) {
-      $num.text(this.value);
+      $threshold.val(this.value);
       return range = this.value;
     });
     drawWave = function(data) {
@@ -143,8 +127,21 @@
           return console.log(err);
         });
       }
-      return $volume.text((volumeSum / 255).toString());
+      return $volume.val((volumeSum / 255).toString());
     };
+    if (!navigator.getUserMedia) {
+      alert('WebRTC(getUserMedia) is not suppported...');
+    } else {
+      console.log('getUserMedia suppported.');
+      navigator.getUserMedia({
+        audio: true
+      }, function(stream) {
+        input = context.createMediaStreamSource(stream);
+        return input.connect(analyser);
+      }, function(err) {
+        return console.log('Error: ' + err);
+      });
+    }
     return setInterval(getFreq, 80);
   });
 

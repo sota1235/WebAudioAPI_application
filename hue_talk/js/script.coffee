@@ -54,27 +54,13 @@ $ ->
   # canvasコンテクスト
   canvasContext = canvas.getContext '2d'
   # キャッシュされたjQuery-DOMパーツ
-  $startButton = $ '#startButton'
   $slider = $ '#slider'
-  $num = $ '#num'
+  $threshold = $ '#threshold'
   $volume = $ '#volume'
 
-  # スタートボタンのコールバック処理
-  $startButton.on 'click', (e) ->
-    if !navigator.getUserMedia
-      alert 'WebRTC(getUserMedia) is not suppported...'
-    else
-      console.log 'getUserMedia suppported.'
-      navigator.getUserMedia
-        audio: true
-        , (stream) ->
-          input = context.createMediaStreamSource stream
-          input.connect analyser
-        , (err) ->
-          console.log 'Error: ' + err
   # スライダー
   $slider.on 'input', (e) ->
-    $num.text this.value
+    $threshold.val this.value
     range = this.value
 
   # 波形をドローするメソッド
@@ -161,6 +147,19 @@ $ ->
           lightSwitch = false
         .fail (err) ->
           console.log err
-    $volume.text (volumeSum/255).toString()
+    $volume.val (volumeSum/255).toString()
 
+  # RTCをスタート
+  if !navigator.getUserMedia
+    alert 'WebRTC(getUserMedia) is not suppported...'
+  else
+    console.log 'getUserMedia suppported.'
+    navigator.getUserMedia
+      audio: true
+      , (stream) ->
+        input = context.createMediaStreamSource stream
+        input.connect analyser
+      , (err) ->
+        console.log 'Error: ' + err
+  # メイン処理
   setInterval getFreq, 80
