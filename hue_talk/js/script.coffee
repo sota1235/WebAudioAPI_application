@@ -29,6 +29,7 @@ input    = null
 hue         = null
 ip          = '192.168.1.100'
 user        = 'newdeveloper'
+lightNum    = 3
 lightSwitch = false # Hueの電気のon/offを持つ
 
 # Other
@@ -155,7 +156,7 @@ $ ->
     volume = parseInt(volumeSum/256)
     # volumeがrange以上かつlightがoffの時
     if volume > range and !lightSwitch
-      hue.lightTrriger 3, true
+      hue.lightTrriger lightNum, true
         .then (result) ->
           console.log 'light on'
           lightSwitch = true
@@ -163,7 +164,7 @@ $ ->
           console.log err
     # volumeがrange以下かつlightがonの時
     else if volume < range and lightSwitch
-      hue.lightTrriger 3, false
+      hue.lightTrriger lightNum, false
         .then (result) ->
           console.log 'light off'
           lightSwitch = false
