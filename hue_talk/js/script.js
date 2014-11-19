@@ -64,18 +64,9 @@
         });
       }
     });
-    $slider.slider({
-      min: 0,
-      max: 255,
-      step: 1,
-      value: 50,
-      change: function(e, ui) {
-        $num.text(ui.value);
-        return range = ui.value;
-      },
-      create: function(e, ui) {
-        return $num.text($(this).slider('option', 'value'));
-      }
+    $slider.on('input', function(e) {
+      $num.text(this.value);
+      return range = this.value;
     });
     drawWave = function(data) {
       var f, fsDivN, height, i, len, middle, modBottom, modHeight, modWidth, n500Hz, paddingBottom, paddingLeft, paddingRight, paddingTop, text, width, x, y, _i;
