@@ -152,7 +152,7 @@
           return console.log(err);
         });
       }
-      return $volume.text((sum / 255).toString());
+      return $volume.text((volumeSum / 255).toString());
     };
     return setInterval(getFreq, 80);
   });

@@ -168,6 +168,6 @@ $ ->
           lightSwitch = false
         .fail (err) ->
           console.log err
-    $volume.text (sum/255).toString()
+    $volume.text (volumeSum/255).toString()
 
   setInterval getFreq, 80
