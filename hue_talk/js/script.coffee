@@ -26,9 +26,10 @@ analyser = null
 input    = null
 
 # Hue
-hue      = null
-ip       = '192.168.1.100'
-user     = 'newdeveloper'
+hue         = null
+ip          = '192.168.1.100'
+user        = 'newdeveloper'
+lightSwitch = false
 
 # Other
 range    = 50
@@ -147,15 +148,24 @@ $ ->
     buffer = new Uint8Array(256)
     analyser.getByteFrequencyData buffer
     drawWave buffer
-    sum = 0
+    volumeSum = 0
     for i in [0..255]
-      sum += buffer[i]
-    hue.lightTrriger 3, parseInt(sum/256) > range
-      .then (result) ->
-        console.log result
-        console.log parseInt(sum/255)
-        $volume.text (sum/255).toString()
-      .fail (err) ->
-        console.log err
+      volumeSum += buffer[i]
+    volume = parseInt(volumeSum/256)
+    if volume > range and !lightSwitch
+      hue.lightTrriger 3, true
+        .then (result) ->
+          console.log 'light on'
+          lightSwitch = true
+        .fail (err) ->
+          console.log err
+    else if volume < range and lightSwitch
+      hue.lightTrriger 3, false
+        .then (result) ->
+          console.log 'light off'
+          lightSwitch = false
+        .fail (err) ->
+          console.log err
+    $volume.text (sum/255).toString()
 
   setInterval getFreq, 80
