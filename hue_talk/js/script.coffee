@@ -30,10 +30,12 @@ hue         = null
 ip          = '192.168.1.100'
 user        = 'newdeveloper'
 lightNum    = 3
-lightSwitch = false # Hueの電気のon/offを持つ
+lightSwitch = false       # Hueの電気のon/offを持つ
+lightColor  = "blue" # Hueの色を持つ
 
 # Other
-range    = 50
+v_range    = 50
+c_range    = 6000
 
 # analyser setting
 analyser = context.createAnalyser()
@@ -44,10 +46,16 @@ analyser.smoothingTimeContant = 0
 hue = new HueController(ip, user)
 # Hueの"bri"パラメータをマックスにしておく
 hue.changeBri 3, 255
-.then (result) ->
-  console.log 'Hue setting completed'
-.fail (err) ->
-  console.log err
+  .then (result) ->
+    console.log 'Hue brightness setting completed'
+  .fail (err) ->
+    console.log err
+# Hueの"hs"パラメータを青にしておく
+hue.changeColor lightNum, lightColor
+  .then (result) ->
+    console.log 'Hue color setting completed'
+  .fail (err) ->
+    console.log err
 
 # DOMが読み込まれたあとの処理
 $ ->
@@ -60,6 +68,7 @@ $ ->
   $slider = $ '#slider'
   $num = $ '#num'
   $volume = $ '#volume'
+  $status = $ '#status'
 
   # スタートボタンのコールバック処理
   $startButton.on 'click', (e) ->
@@ -79,7 +88,7 @@ $ ->
   # スライダー
   $slider.on 'input', (e) ->
     $num.text this.value
-    range = this.value
+    v_range = this.value
 
   # 波形をドローするメソッド
   # clone from http://curtaincall.weblike.jp/portfolio-web-sounder/webaudioapi-visualization/draw-wave
@@ -149,28 +158,56 @@ $ ->
     analyser.getByteFrequencyData buffer
     drawWave buffer
     volumeSum = 0
+    lowSum  = 0
+    highSum = 0
     # 各周波数の総和を計算
     for i in [0..255]
       volumeSum += buffer[i]
+      if i < 128
+        lowSum  += buffer[i]
+      else
+        highSum += buffer[i]
+    # その場の雰囲気を低音 - 高音で評価
+    status = lowSum - highSum
     # 各周波数の平均をその場の音量として計算
     volume = parseInt(volumeSum/256)
-    # volumeがrange以上かつlightがoffの時
-    if volume > range and !lightSwitch
+
+    # volumeがv_range以上かつlightがoffの時
+    if volume > v_range and !lightSwitch
       hue.lightTrriger lightNum, true
         .then (result) ->
           console.log 'light on'
           lightSwitch = true
         .fail (err) ->
           console.log err
-    # volumeがrange以下かつlightがonの時
-    else if volume < range and lightSwitch
+    # volumeがv_range以下かつlightがonの時
+    else if volume < v_range and lightSwitch
       hue.lightTrriger lightNum, false
         .then (result) ->
           console.log 'light off'
           lightSwitch = false
         .fail (err) ->
           console.log err
+
+    # statusがc_range以上かつlightがblueの時
+    if status > c_range and lightColor is "blue"
+      hue.changeColor lightNum, 0
+        .then (result) ->
+          console.log 'change to red'
+          lightColor = "red"
+        .fail (err) ->
+          console.log err
+    else if status < c_range and lightColor is "red"
+      hue.changeColor lightNum, 46920
+        .then (result) ->
+          console.log 'change to blue'
+          lightColor = "blue"
+        .fail (err) ->
+          console.log err
+
     # ページに現在の音量を描画
     $volume.text (volumeSum/255).toString()
+    # ページに現在の会話の盛り上がり度を描画
+    $status.text status.toString()
 
   setInterval getFreq, 80
