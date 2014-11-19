@@ -1,10 +1,10 @@
 <html>
 <head>
   <title>Hue Talk Sample</title>
-  <link type="text/css" rel="stylesheet" href="jquery-ui.min.css" />
+  <link type="text/css" rel="stylesheet" href="css/jquery-ui.min.css" />
   <script src="../jquery/jquery-1.11.1.min.js"></script>
   <script src="../jquery/jquery-migrate-1.2.1.js"></script>
-  <script src="js/lib/http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+  <script src="js/lib/jquery-ui.min.js"></script>
   <script src="js/lib/color-convert-0.5.1.min.js"></script>
   <script src="js/lib/hue.js"></script>
 </head>
@@ -13,7 +13,9 @@
   <h1>Hue Talk Sample</h1>
   <p>音量に応じてHueの光量を変化</p>
   <button class="start" value="Push">Push</button>
-  <div class="analyser"></div>
+  <div class="volume"></div>
+  <div id="num" type="text" size="3" reqdonly /></div>
+  <div id="slider" style="width:300px;"></div>
   <script src="./js/script.js"></script>
 </body>
 </html>
