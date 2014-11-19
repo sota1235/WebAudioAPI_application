@@ -159,4 +159,17 @@ $ ->
           lightSwitch = false
         .fail (err) ->
           console.log err
+  # RTCをスタート
+  if !navigator.getUserMedia
+    alert 'WebRTC(getUserMedia) is not suppported...'
+  else
+    console.log 'getUserMedia suppported.'
+    navigator.getUserMedia
+      audio: true
+      , (stream) ->
+        input = context.createMediaStreamSource stream
+        input.connect analyser
+      , (err) ->
+        console.log 'Error: ' + err
+  # メイン処理
   setInterval getFreq, 80

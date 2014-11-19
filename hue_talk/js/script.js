@@ -118,21 +118,20 @@
       }
       volume = parseInt(volumeSum / 256);
       if (volume > range && !lightSwitch) {
-        hue.lightTrriger(lightNum, true).then(function(result) {
+        return hue.lightTrriger(lightNum, true).then(function(result) {
           console.log('light on');
           return lightSwitch = true;
         }).fail(function(err) {
           return console.log(err);
         });
       } else if (volume < range && lightSwitch) {
-        hue.lightTrriger(lightNum, false).then(function(result) {
+        return hue.lightTrriger(lightNum, false).then(function(result) {
           console.log('light off');
           return lightSwitch = false;
         }).fail(function(err) {
           return console.log(err);
         });
       }
-      return $volume.val((volumeSum / 255).toString());
     };
     if (!navigator.getUserMedia) {
       alert('WebRTC(getUserMedia) is not suppported...');
