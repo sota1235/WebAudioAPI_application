@@ -31,7 +31,7 @@
 
   analyser = context.createAnalyser();
 
-  analyser.fftsize = 1024;
+  analyser.fftsize = 2048;
 
   analyser.smoothingTimeContant = 0;
 
@@ -71,7 +71,7 @@
       return range = this.value;
     });
     drawWave = function(data) {
-      var f, fsDivN, height, i, len, middle, modBottom, modHeight, modWidth, n500Hz, paddingBottom, paddingLeft, paddingRight, paddingTop, text, width, x, y, _i;
+      var f, fsDivN, height, i, len, middle, modBottom, modHeight, modWidth, n500Hz, paddingBottom, paddingLeft, paddingRight, paddingTop, spectrums, text, width, x, y, _i;
       len = data.length;
       width = canvas.width;
       height = canvas.height;
@@ -85,12 +85,14 @@
       middle = (modHeight / 2) + paddingTop;
       fsDivN = context.sampleRate / analyser.fftsize;
       n500Hz = Math.floor(500 / fsDivN);
+      spectrums = new Uint8Array(analyser.frequencyBinCount / 4);
+      analyser.getByteFrequencyData(spectrums);
       canvasContext.fillStyle = 'rgb(0, 0, 0)';
       canvasContext.fillRect(0, 0, canvas.width, canvas.height);
       canvasContext.beginPath();
       for (i = _i = 0; _i <= 255; i = ++_i) {
-        x = Math.floor(i / len * modWidth + paddingLeft);
-        y = Math.floor((1 - data[i] / 255) * modHeight + paddingTop);
+        x = Math.floor(i / len * modWidth) + paddingLeft;
+        y = Math.floor((1 - data[i] / 255) * modHeight) + paddingTop;
         if (i === 0) {
           canvasContext.moveTo(x, y);
         } else {

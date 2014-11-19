@@ -37,7 +37,7 @@ range    = 50
 
 # analyser setting
 analyser = context.createAnalyser()
-analyser.fftsize = 1024
+analyser.fftsize = 2048
 analyser.smoothingTimeContant = 0
 
 # hue setting
@@ -105,12 +105,16 @@ $ ->
     # 500Hz毎に描画するための処理
     n500Hz = Math.floor 500 / fsDivN
 
+    # Get data for drawing spectrum
+    spectrums = new Uint8Array analyser.frequencyBinCount / 4
+    analyser.getByteFrequencyData spectrums
+
     canvasContext.fillStyle = 'rgb(0, 0, 0)'
     canvasContext.fillRect 0, 0, canvas.width, canvas.height
     canvasContext.beginPath()
     for i in [0..255]
-      x = Math.floor i / len * modWidth + paddingLeft
-      y = Math.floor (1 - data[i] / 255) * modHeight + paddingTop
+      x = Math.floor(i / len * modWidth) + paddingLeft
+      y = Math.floor((1 - data[i] / 255) * modHeight) + paddingTop
 
       if i == 0
         canvasContext.moveTo x, y
