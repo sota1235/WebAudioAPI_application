@@ -40,12 +40,12 @@
   });
 
   $(function() {
-    var $number, $sidebar, $startButton, $volume, canvas, canvasContext, drawWave, getFreq;
+    var $num, $slider, $startButton, $volume, canvas, canvasContext, drawWave, getFreq;
     canvas = document.querySelector('canvas');
     canvasContext = canvas.getContext('2d');
     $startButton = $('#startButton');
-    $sidebar = $('#sidebase');
-    $number = $('#num');
+    $slider = $('#slider');
+    $num = $('#num');
     $volume = $('#volume');
     $startButton.on('click', function(e) {
       if (!navigator.getUserMedia) {
@@ -62,7 +62,7 @@
         });
       }
     });
-    $sidebar.slider({
+    $slider.slider({
       min: 0,
       max: 255,
       step: 1,
