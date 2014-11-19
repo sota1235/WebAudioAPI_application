@@ -85,7 +85,8 @@
       middle = (modHeight / 2) + paddingTop;
       fsDivN = context.sampleRate / analyser.fftsize;
       n500Hz = Math.floor(500 / fsDivN);
-      canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+      canvasContext.fillStyle = 'rgb(0, 0, 0)';
+      canvasContext.fillRect(0, 0, canvas.width, canvas.height);
       canvasContext.beginPath();
       for (i = _i = 0; _i <= 255; i = ++_i) {
         x = Math.floor(i / len * modWidth + paddingLeft);

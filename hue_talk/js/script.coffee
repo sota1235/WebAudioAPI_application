@@ -105,7 +105,8 @@ $ ->
     # 500Hz毎に描画するための処理
     n500Hz = Math.floor 500 / fsDivN
 
-    canvasContext.clearRect 0, 0, canvas.width, canvas.height
+    canvasContext.fillStyle = 'rgb(0, 0, 0)'
+    canvasContext.fillRect 0, 0, canvas.width, canvas.height
     canvasContext.beginPath()
     for i in [0..255]
       x = Math.floor i / len * modWidth + paddingLeft
