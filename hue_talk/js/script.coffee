@@ -34,6 +34,7 @@ lightSwitch = false # Hueの電気のon/offを持つ
 
 # Other
 range    = 50
+interval = 80
 
 # analyser setting
 analyser = context.createAnalyser()
@@ -56,14 +57,20 @@ $ ->
   # canvasコンテクスト
   canvasContext = canvas.getContext '2d'
   # キャッシュされたjQuery-DOMパーツ
-  $slider = $ '#slider'
+  $th_slider = $ '#th_slider'
+  $in_slider = $ '#in_slider'
   $threshold = $ '#threshold'
-  $volume = $ '#volume'
+  $interval  = $ '#interval'
+  $volume    = $ '#volume'
 
   # スライダー
-  $slider.on 'input', (e) ->
+  $th_slider.on 'input', (e) ->
     $threshold.val this.value
     range = this.value
+  $in_slider.on 'input', (e) ->
+    $interval.val this.value
+    interval = this.value
+    console.log interval
 
   # 波形をドローするメソッド
   # clone from http://curtaincall.weblike.jp/portfolio-web-sounder/webaudioapi-visualization/draw-wave
@@ -159,6 +166,9 @@ $ ->
           lightSwitch = false
         .fail (err) ->
           console.log err
+    $volume.val (volumeSum/255).toString()
+    setTimeout getFreq, interval
+
   # RTCをスタート
   if !navigator.getUserMedia
     alert 'WebRTC(getUserMedia) is not suppported...'
@@ -171,5 +181,6 @@ $ ->
         input.connect analyser
       , (err) ->
         console.log 'Error: ' + err
+
   # メイン処理
-  setInterval getFreq, 80
+  getFreq()
