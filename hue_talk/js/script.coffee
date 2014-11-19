@@ -153,7 +153,6 @@ $ ->
     hue.lightTrriger 3, parseInt(sum/256) > range
       .then (result) ->
         console.log result
-        console.log parseInt(sum/255)
         $volume.text (sum/255).toString()
       .fail (err) ->
         console.log err
