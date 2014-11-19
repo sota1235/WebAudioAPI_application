@@ -31,7 +31,7 @@
 
   analyser.fftsize = 1024;
 
-  analyser.smoothingTimeContant = 0.9;
+  analyser.smoothingTimeContant = 0;
 
   hue = new HueController(ip, user);
 
