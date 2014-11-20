@@ -44,7 +44,7 @@
   for (_i = 0, _len = hues.length; _i < _len; _i++) {
     h = hues[_i];
     hue.changeBri(h, 255).then(function(result) {
-      return console.log('Hue setting completed');
+      return console.log('Hue brightness setting completed');
     }).fail(function(err) {
       return console.log(err);
     });
@@ -188,6 +188,7 @@
         lightColor = "blue";
       }
       $volume.val((volumeSum / 255).toString());
+      $status.val(lightColor);
       return setTimeout(getFreq, interval);
     };
     if (!navigator.getUserMedia) {

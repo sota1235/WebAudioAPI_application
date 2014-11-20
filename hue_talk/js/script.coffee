@@ -48,7 +48,7 @@ for h in hues
   # Hueの"bri"パラメータをマックスにしておく
   hue.changeBri h, 255
     .then (result) ->
-      console.log 'Hue setting completed'
+      console.log 'Hue brightness setting completed'
     .fail (err) ->
       console.log err
   # Hueの"hs"パラメータを青にしておく
@@ -204,7 +204,10 @@ $ ->
           .fail (err) ->
             console.log err
       lightColor = "blue"
+
+    # HTMLに反映
     $volume.val (volumeSum/255).toString()
+    $status.val lightColor
 
     setTimeout getFreq, interval
 
