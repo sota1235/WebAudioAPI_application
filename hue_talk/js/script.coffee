@@ -44,7 +44,7 @@ analyser.smoothingTimeContant = 0
 # hue setting
 hue = new HueController(ip, user)
 # Hueの"bri"パラメータをマックスにしておく
-hue.changeBri 3, 255
+hue.changeBri lightNum, 255
 .then (result) ->
   console.log 'Hue setting completed'
 .fail (err) ->
