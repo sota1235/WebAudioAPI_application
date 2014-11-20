@@ -45,7 +45,7 @@ analyser.smoothingTimeContant = 0
 hue = new HueController(ip, user)
 # Hueの"bri"パラメータをマックスにしておく
 for h in hues
-  hue.changeBri hue, 255
+  hue.changeBri h, 255
   .then (result) ->
     console.log 'Hue setting completed'
   .fail (err) ->
@@ -154,7 +154,7 @@ $ ->
     # volumeがrange以上かつlightがoffの時
     if volume > range and !lightSwitch
       for h in hues
-        hue.lightTrriger hue, true
+        hue.lightTrriger h, true
           .then (result) ->
             console.log 'light on'
             lightSwitch = true
@@ -163,7 +163,7 @@ $ ->
     # volumeがrange以下かつlightがonの時
     else if volume < range and lightSwitch
       for h in hues
-        hue.lightTrriger hue, false
+        hue.lightTrriger h, false
           .then (result) ->
             console.log 'light off'
             lightSwitch = false

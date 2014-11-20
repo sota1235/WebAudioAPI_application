@@ -41,7 +41,7 @@
 
   for (_i = 0, _len = hues.length; _i < _len; _i++) {
     h = hues[_i];
-    hue.changeBri(hue, 255).then(function(result) {
+    hue.changeBri(h, 255).then(function(result) {
       return console.log('Hue setting completed');
     }).fail(function(err) {
       return console.log(err);
@@ -132,7 +132,7 @@
       if (volume > range && !lightSwitch) {
         for (_k = 0, _len1 = hues.length; _k < _len1; _k++) {
           h = hues[_k];
-          hue.lightTrriger(hue, true).then(function(result) {
+          hue.lightTrriger(h, true).then(function(result) {
             console.log('light on');
             return lightSwitch = true;
           }).fail(function(err) {
@@ -142,7 +142,7 @@
       } else if (volume < range && lightSwitch) {
         for (_l = 0, _len2 = hues.length; _l < _len2; _l++) {
           h = hues[_l];
-          hue.lightTrriger(hue, false).then(function(result) {
+          hue.lightTrriger(h, false).then(function(result) {
             console.log('light off');
             return lightSwitch = false;
           }).fail(function(err) {
