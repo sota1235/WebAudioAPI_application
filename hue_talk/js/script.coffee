@@ -52,7 +52,7 @@ for h in hues
     .fail (err) ->
       console.log err
   # Hueの"hs"パラメータを青にしておく
-  hue.changeColor h, lightColor
+  hue.changeColor h, 46920
     .then (result) ->
       console.log 'Hue color setting completed'
     .fail (err) ->
@@ -174,18 +174,18 @@ $ ->
         hue.lightTrriger h, true
           .then (result) ->
             console.log 'light on'
-            lightSwitch = true
           .fail (err) ->
             console.log err
+      lightSwitch = true
     # volumeがv_range以下かつlightがonの時
     else if volume < v_range and lightSwitch
       for h in hues
         hue.lightTrriger h, false
           .then (result) ->
             console.log 'light off'
-            lightSwitch = false
           .fail (err) ->
             console.log err
+      lightSwitch = false
 
     # statusがc_range以上かつlightがblueの時
     if status > c_range and lightColor is "blue"
@@ -193,17 +193,17 @@ $ ->
         hue.changeColor h, 0
           .then (result) ->
             console.log 'change to red'
-            lightColor = "red"
           .fail (err) ->
             console.log err
+      lightColor = "red"
     else if status < c_range and lightColor is "red"
       for h in hues
         hue.changeColor h, 46920
           .then (result) ->
             console.log 'change to blue'
-            lightColor = "blue"
           .fail (err) ->
             console.log err
+      lightColor = "blue"
     $volume.val (volumeSum/255).toString()
 
     setTimeout getFreq, interval
