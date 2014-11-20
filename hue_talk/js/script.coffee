@@ -29,7 +29,7 @@ input    = null
 hue         = null
 ip          = '192.168.1.100'
 user        = 'newdeveloper'
-lightNum    = 3
+hues        = [1, 3]
 lightSwitch = false # Hueの電気のon/offを持つ
 
 # Other
@@ -44,11 +44,12 @@ analyser.smoothingTimeContant = 0
 # hue setting
 hue = new HueController(ip, user)
 # Hueの"bri"パラメータをマックスにしておく
-hue.changeBri lightNum, 255
-.then (result) ->
-  console.log 'Hue setting completed'
-.fail (err) ->
-  console.log err
+for h in hues
+  hue.changeBri hue, 255
+  .then (result) ->
+    console.log 'Hue setting completed'
+  .fail (err) ->
+    console.log err
 
 # DOMが読み込まれたあとの処理
 $ ->
@@ -152,20 +153,22 @@ $ ->
     volume = parseInt(volumeSum/256)
     # volumeがrange以上かつlightがoffの時
     if volume > range and !lightSwitch
-      hue.lightTrriger lightNum, true
-        .then (result) ->
-          console.log 'light on'
-          lightSwitch = true
-        .fail (err) ->
-          console.log err
+      for h in hues
+        hue.lightTrriger hue, true
+          .then (result) ->
+            console.log 'light on'
+            lightSwitch = true
+          .fail (err) ->
+            console.log err
     # volumeがrange以下かつlightがonの時
     else if volume < range and lightSwitch
-      hue.lightTrriger lightNum, false
-        .then (result) ->
-          console.log 'light off'
-          lightSwitch = false
-        .fail (err) ->
-          console.log err
+      for h in hues
+        hue.lightTrriger hue, false
+          .then (result) ->
+            console.log 'light off'
+            lightSwitch = false
+          .fail (err) ->
+            console.log err
     $volume.val (volumeSum/255).toString()
     setTimeout getFreq, interval
 
