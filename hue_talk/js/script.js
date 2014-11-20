@@ -48,7 +48,7 @@
     }).fail(function(err) {
       return console.log(err);
     });
-    hue.changeColor(h, lightColor).then(function(result) {
+    hue.changeColor(h, 46920).then(function(result) {
       return console.log('Hue color setting completed');
     }).fail(function(err) {
       return console.log(err);
@@ -149,43 +149,43 @@
         for (_k = 0, _len1 = hues.length; _k < _len1; _k++) {
           h = hues[_k];
           hue.lightTrriger(h, true).then(function(result) {
-            console.log('light on');
-            return lightSwitch = true;
+            return console.log('light on');
           }).fail(function(err) {
             return console.log(err);
           });
         }
+        lightSwitch = true;
       } else if (volume < v_range && lightSwitch) {
         for (_l = 0, _len2 = hues.length; _l < _len2; _l++) {
           h = hues[_l];
           hue.lightTrriger(h, false).then(function(result) {
-            console.log('light off');
-            return lightSwitch = false;
+            return console.log('light off');
           }).fail(function(err) {
             return console.log(err);
           });
         }
+        lightSwitch = false;
       }
       if (status > c_range && lightColor === "blue") {
         for (_m = 0, _len3 = hues.length; _m < _len3; _m++) {
           h = hues[_m];
           hue.changeColor(h, 0).then(function(result) {
-            console.log('change to red');
-            return lightColor = "red";
+            return console.log('change to red');
           }).fail(function(err) {
             return console.log(err);
           });
         }
+        lightColor = "red";
       } else if (status < c_range && lightColor === "red") {
         for (_n = 0, _len4 = hues.length; _n < _len4; _n++) {
           h = hues[_n];
           hue.changeColor(h, 46920).then(function(result) {
-            console.log('change to blue');
-            return lightColor = "blue";
+            return console.log('change to blue');
           }).fail(function(err) {
             return console.log(err);
           });
         }
+        lightColor = "blue";
       }
       $volume.val((volumeSum / 255).toString());
       return setTimeout(getFreq, interval);
