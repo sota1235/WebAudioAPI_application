@@ -34,6 +34,7 @@ lightSwitch = false # Hueの電気のon/offを持つ
 lightColor  = "blue" # Hueの色を持つ
 
 # Other
+interval = 80
 v_range    = 50
 c_range    = 6000
 
@@ -78,8 +79,7 @@ $ ->
     v_range = this.value
   $in_slider.on 'input', (e) ->
     $interval.val this.value
-    c_range = this.value
-    console.log interval
+    interval = this.value
 
   # 波形をドローするメソッド
   # clone from http://curtaincall.weblike.jp/portfolio-web-sounder/webaudioapi-visualization/draw-wave
