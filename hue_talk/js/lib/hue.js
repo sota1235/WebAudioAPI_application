@@ -129,9 +129,8 @@ var HueController = function(ip, user) {
     dfd = $.Deferred();
     uri = this.user + '/lights/' + light.toString() + '/state';
     method = 'PUT';
-    h = this.clcv.rgb(color).hsv()[0];
+    h = color;
     data = {
-        "colormode": "hs",
         "hue"      : h
     };
     data = JSON.stringify(data);

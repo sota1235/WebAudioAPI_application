@@ -27,14 +27,15 @@ input    = null
 
 # Hue
 hue         = null
-ip          = '192.168.1.100'
+ip          = '192.168.11.3'
 user        = 'newdeveloper'
 hues        = [1, 3]
 lightSwitch = false # Hueの電気のon/offを持つ
+lightColor  = "blue" # Hueの色を持つ
 
 # Other
-range    = 50
-interval = 80
+v_range    = 50
+c_range    = 6000
 
 # analyser setting
 analyser = context.createAnalyser()
@@ -43,13 +44,19 @@ analyser.smoothingTimeContant = 0
 
 # hue setting
 hue = new HueController(ip, user)
-# Hueの"bri"パラメータをマックスにしておく
 for h in hues
+  # Hueの"bri"パラメータをマックスにしておく
   hue.changeBri h, 255
-  .then (result) ->
-    console.log 'Hue setting completed'
-  .fail (err) ->
-    console.log err
+    .then (result) ->
+      console.log 'Hue setting completed'
+    .fail (err) ->
+      console.log err
+  # Hueの"hs"パラメータを青にしておく
+  hue.changeColor h, lightColor
+    .then (result) ->
+      console.log 'Hue color setting completed'
+    .fail (err) ->
+      console.log err
 
 # DOMが読み込まれたあとの処理
 $ ->
@@ -63,14 +70,15 @@ $ ->
   $threshold = $ '#threshold'
   $interval  = $ '#interval'
   $volume    = $ '#volume'
+  $status    = $ '#status'
 
   # スライダー
   $th_slider.on 'input', (e) ->
     $threshold.val this.value
-    range = this.value
+    v_range = this.value
   $in_slider.on 'input', (e) ->
     $interval.val this.value
-    interval = this.value
+    c_range = this.value
     console.log interval
 
   # 波形をドローするメソッド
@@ -146,30 +154,54 @@ $ ->
     analyser.getByteFrequencyData buffer
     drawWave buffer
     volumeSum = 0
+    lowSum  = 0
+    highSum = 0
     # 各周波数の総和を計算
     for i in [0..255]
       volumeSum += buffer[i]
+      if i < 128
+        lowSum  += buffer[i]
+      else
+        highSum += buffer[i]
+    # その場の雰囲気を低音 - 高音で評価
+    status = lowSum - highSum
     # 各周波数の平均をその場の音量として計算
     volume = parseInt(volumeSum/256)
-    # volumeがrange以上かつlightがoffの時
-    if volume > range and !lightSwitch
-      for h in hues
-        hue.lightTrriger h, true
-          .then (result) ->
-            console.log 'light on'
-            lightSwitch = true
-          .fail (err) ->
-            console.log err
-    # volumeがrange以下かつlightがonの時
-    else if volume < range and lightSwitch
-      for h in hues
-        hue.lightTrriger h, false
-          .then (result) ->
-            console.log 'light off'
-            lightSwitch = false
-          .fail (err) ->
-            console.log err
+
+    # volumeがv_range以上かつlightがoffの時
+    if volume > v_range and !lightSwitch
+      hue.lightTrriger lightNum, true
+        .then (result) ->
+          console.log 'light on'
+          lightSwitch = true
+        .fail (err) ->
+          console.log err
+    # volumeがv_range以下かつlightがonの時
+    else if volume < v_range and lightSwitch
+      hue.lightTrriger lightNum, false
+        .then (result) ->
+          console.log 'light off'
+          lightSwitch = false
+        .fail (err) ->
+          console.log err
+
+    # statusがc_range以上かつlightがblueの時
+    if status > c_range and lightColor is "blue"
+      hue.changeColor lightNum, 0
+        .then (result) ->
+          console.log 'change to red'
+          lightColor = "red"
+        .fail (err) ->
+          console.log err
+    else if status < c_range and lightColor is "red"
+      hue.changeColor lightNum, 46920
+        .then (result) ->
+          console.log 'change to blue'
+          lightColor = "blue"
+        .fail (err) ->
+          console.log err
     $volume.val (volumeSum/255).toString()
+
     setTimeout getFreq, interval
 
   # RTCをスタート
