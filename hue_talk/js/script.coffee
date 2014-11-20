@@ -170,36 +170,40 @@ $ ->
 
     # volumeがv_range以上かつlightがoffの時
     if volume > v_range and !lightSwitch
-      hue.lightTrriger lightNum, true
-        .then (result) ->
-          console.log 'light on'
-          lightSwitch = true
-        .fail (err) ->
-          console.log err
+      for h in hues
+        hue.lightTrriger h, true
+          .then (result) ->
+            console.log 'light on'
+            lightSwitch = true
+          .fail (err) ->
+            console.log err
     # volumeがv_range以下かつlightがonの時
     else if volume < v_range and lightSwitch
-      hue.lightTrriger lightNum, false
-        .then (result) ->
-          console.log 'light off'
-          lightSwitch = false
-        .fail (err) ->
-          console.log err
+      for h in hues
+        hue.lightTrriger h, false
+          .then (result) ->
+            console.log 'light off'
+            lightSwitch = false
+          .fail (err) ->
+            console.log err
 
     # statusがc_range以上かつlightがblueの時
     if status > c_range and lightColor is "blue"
-      hue.changeColor lightNum, 0
-        .then (result) ->
-          console.log 'change to red'
-          lightColor = "red"
-        .fail (err) ->
-          console.log err
+      for h in hues
+        hue.changeColor h, 0
+          .then (result) ->
+            console.log 'change to red'
+            lightColor = "red"
+          .fail (err) ->
+            console.log err
     else if status < c_range and lightColor is "red"
-      hue.changeColor lightNum, 46920
-        .then (result) ->
-          console.log 'change to blue'
-          lightColor = "blue"
-        .fail (err) ->
-          console.log err
+      for h in hues
+        hue.changeColor h, 46920
+          .then (result) ->
+            console.log 'change to blue'
+            lightColor = "blue"
+          .fail (err) ->
+            console.log err
     $volume.val (volumeSum/255).toString()
 
     setTimeout getFreq, interval
