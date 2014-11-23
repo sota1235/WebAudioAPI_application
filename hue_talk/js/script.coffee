@@ -29,9 +29,13 @@ input    = null
 hue         = null
 ip          = '192.168.11.3'
 user        = 'newdeveloper'
-hues        = [1, 3]
-lightSwitch = false # Hueの電気のon/offを持つ
-lightColor  = "blue" # Hueの色を持つ
+hues        =
+  1:
+    "lightSwitch": false
+    "lightColor" : "blue"
+  3:
+    "lightSwitch": false
+    "lightColor" : "blue"
 
 # Other
 interval = 80
@@ -148,6 +152,7 @@ $ ->
     canvasContext.fillText '1.00', 3, paddingTop
     canvasContext.fillText '0.50', 3, middle
     canvasContext.fillText '0.00', 3, modBottom
+
   # setIntervalで各周波数の値をとり、それを元に処理
   getFreq = ->
     buffer = new Uint8Array(256)
@@ -169,45 +174,43 @@ $ ->
     volume = parseInt(volumeSum/256)
 
     # volumeがv_range以上かつlightがoffの時
-    if volume > v_range and !lightSwitch
-      for h in hues
+    for h, s of hues
+      if volume > v_range and !s["lightSwitch"]
         hue.lightTrriger h, true
           .then (result) ->
             console.log 'light on'
+            s["lightSwitch"] = true
           .fail (err) ->
             console.log err
-      lightSwitch = true
-    # volumeがv_range以下かつlightがonの時
-    else if volume < v_range and lightSwitch
-      for h in hues
+      # volumeがv_range以下かつlightがonの時
+      else if volume < v_range and s["lightSwitch"]
         hue.lightTrriger h, false
           .then (result) ->
             console.log 'light off'
+            s["lightSwitch"] = false
           .fail (err) ->
             console.log err
-      lightSwitch = false
 
     # statusがc_range以上かつlightがblueの時
-    if status > c_range and lightColor is "blue"
-      for h in hues
+    for h, s of hues
+      if status > c_range and s["lightColor"] is "blue"
         hue.changeColor h, 0
           .then (result) ->
             console.log 'change to red'
+            s["lightColor"] = "red"
           .fail (err) ->
             console.log err
-      lightColor = "red"
-    else if status < c_range and lightColor is "red"
-      for h in hues
+      else if status < c_range and s["lightColor"] is "red"
         hue.changeColor h, 46920
           .then (result) ->
             console.log 'change to blue'
+            s["lightColor"] = "blue"
           .fail (err) ->
             console.log err
-      lightColor = "blue"
 
     # HTMLに反映
     $volume.val (volumeSum/255).toString()
-    $status.val lightColor
+    $status.val if status > c_range then "red" else "blue"
 
     setTimeout getFreq, interval
 
